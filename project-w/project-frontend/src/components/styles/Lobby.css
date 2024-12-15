@@ -1,0 +1,119 @@
+/* Contenitore principale */
+.lobby-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Barra laterale a sinistra */
+  .lobby-left-sidebar {
+    width: 250px; /* Larghezza della barra laterale */
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Spaziatura tra lista dei giocatori e il bottone Invita */
+  }
+  
+  .lobby-left-sidebar h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .players-list {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1; /* La lista dei giocatori occupa lo spazio rimanente */
+  }
+  
+  .player-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .player-avatar {
+    margin-right: 10px;
+    font-size: 24px;
+  }
+  
+  .player-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Bottone Invita */
+  .invite-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px; /* Distanza dal fondo della lista */
+    transition: background-color 0.3s ease;
+  }
+  
+  .invite-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Contenuto principale a destra */
+  .lobby-main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .lobby-main-content h1 {
+    color: #007bff;
+  }
+  
+  .minigames-box {
+    margin-top: 40px;
+    width: 80%; /* Larghezza del box dei minigiochi */
+    text-align: center;
+  }
+  
+  .minigames-container {
+    display: flex;
+    justify-content: center; /* Centra i minigiochi orizzontalmente */
+    flex-wrap: wrap; /* Consente di andare a capo se non ci stanno tutti nella stessa riga */
+    gap: 20px; /* Distanza tra i minigiochi */
+  }
+  
+  .minigame-card {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 150px; /* Imposta la larghezza per il card */
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .minigame-card:hover {
+    transform: scale(1.1); /* Ingrandisce il card al passaggio del mouse */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra al passaggio del mouse */
+  }
+  
+  .game-icon {
+    font-size: 48px;
+  }
+  
+  .game-name {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+  

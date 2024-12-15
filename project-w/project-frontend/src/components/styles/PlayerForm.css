@@ -1,0 +1,117 @@
+.player-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+    padding: 20px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .avatar-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .selected-avatar {
+    font-size: 40px;
+    cursor: pointer;
+    display: flex; /* Cambia a flexbox per centrare il contenuto */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra orizzontalmente */
+    padding: 8px;
+    width: 60px; /* Imposta una larghezza fissa */
+    height: 60px; /* Imposta un'altezza fissa uguale alla larghezza */
+    border: 1px solid #ccc; /* Bordo sottile */
+    border-radius: 50%; /* Rende il bordo rotondo */
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra leggera */
+    transition: transform 0.2s ease; /* Aggiunge un'animazione hover */
+  }
+  
+  .selected-avatar:hover {
+    transform: scale(1.1); /* Effetto di zoom al passaggio del mouse */
+  }
+  
+  .emoji-picker {
+    position: fixed; /* Posizionamento fisso rispetto alla finestra */
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra orizzontalmente */
+    transform: translate(-50%, -50%); /* Centra esattamente rispetto al punto di ancoraggio */
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 300px; /* Larghezza massima del pannello */
+    z-index: 1000; /* Porta il pannello sopra altri elementi */
+  }
+  
+  .emoji-option {
+    font-size: 32px;
+    cursor: pointer;
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid #ccc; /* Aggiungi un bordo simile al selected-avatar */
+    border-radius: 50%; /* Rendi il bordo rotondo */
+    transition: transform 0.2s ease, border-color 0.2s ease; /* Aggiungi una transizione per l'hover */
+  }
+  
+  .emoji-option:hover {
+    transform: scale(1.2); /* Effetto di ingrandimento */
+    border-color: #007bff; /* Cambia il colore del bordo quando si passa sopra */
+  }
+  
+  
+  button.create-lobby-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button.create-lobby-button:hover {
+    background-color: #0056b3;
+  }
+  
