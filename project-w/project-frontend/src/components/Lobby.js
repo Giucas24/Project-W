@@ -23,6 +23,11 @@ const Lobby = () => {
 
     // Funzione per gestire la connessione e ascoltare i giocatori
     useEffect(() => {
+        // Invia le informazioni del giocatore quando si unisce alla lobby
+        if (username && avatar) {
+            socket.emit('joinLobby', { name: username, avatar });
+        }
+
         // Ascolta gli aggiornamenti sui giocatori
         socket.on('updatePlayers', (players) => {
             setPlayersInLobby(players); // Aggiorna la lista dei giocatori
@@ -32,8 +37,7 @@ const Lobby = () => {
         return () => {
             socket.off('updatePlayers');
         };
-    }, []);
-
+    }, [username, avatar]); // Si attiva solo quando username o avatar cambiano
     // Funzione per gestire il click sul bottone Invita
     const handleInviteClick = () => {
         alert("Invito inviato!");

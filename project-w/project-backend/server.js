@@ -5,14 +5,21 @@ const socketIo = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
 
-// Abilita CORS per permettere le richieste da http://localhost:3000 (frontend React)
+// Configura il CORS per il backend Express
 app.use(cors({
-    origin: 'http://localhost:3000', // Puoi cambiare questa URL in base alla tua configurazione
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
+
+// Configura il CORS per Socket.IO
+const io = socketIo(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST']
+    }
+});
 
 // Lista di giocatori (memorizzata nel server)
 let players = [];
@@ -23,12 +30,17 @@ io.on('connection', (socket) => {
 
     // Gestisci l'evento quando un giocatore si unisce alla lobby
     socket.on('joinLobby', (player) => {
-        // Aggiungi il giocatore alla lista
-        players.push({ ...player, id: socket.id });
-        console.log('Giocatori nella lobby:', players);
+        // Controlla se il giocatore è già nella lista (in base al nome, avatar o socket.id)
+        const playerExists = players.some(p => p.name === player.name && p.avatar === player.avatar);
 
-        // Invia la lista aggiornata a tutti i client
-        io.emit('updatePlayers', players);
+        if (!playerExists) {
+            // Se il giocatore non è già nella lista, aggiungilo
+            players.push({ ...player, id: socket.id });
+            console.log('Giocatori nella lobby:', players);
+
+            // Invia la lista aggiornata a tutti i client
+            io.emit('updatePlayers', players);
+        }
     });
 
     // Gestisci la disconnessione del giocatore
@@ -39,6 +51,7 @@ io.on('connection', (socket) => {
         io.emit('updatePlayers', players); // Invia la lista aggiornata
     });
 });
+
 
 // Avvia il server
 server.listen(5000, () => {
