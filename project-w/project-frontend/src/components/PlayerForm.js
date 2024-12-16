@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-import io from 'socket.io-client'; // Importa Socket.io
+import socket from './socket';
 import './styles/PlayerForm.css'; // Importa gli stili
 
 const emojiList = ['😀', '😎', '😇', '🥳', '🤓', '🤖', '👾', '🐵', '🐱', '🐶']; // Lista di emoji disponibili
-
-// Connetti a Socket.io
-const socket = io('http://localhost:5000');
 
 const PlayerForm = () => {
     const [username, setUsername] = useState('');
@@ -43,7 +40,7 @@ const PlayerForm = () => {
     return (
         <div className="player-form-container">
             <h2>Project W</h2>
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit} autoComplete='off'>
                 {/* Input per il nome utente */}
                 <div className="form-group">
                     <input
