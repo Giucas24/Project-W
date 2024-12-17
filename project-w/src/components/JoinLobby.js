@@ -12,10 +12,10 @@ const JoinLobby = () => {
             alert("Devi inserire un nome!");
             return;
         }
-        const response = await fetch(`http://localhost:5000/join-lobby/${id}`, {
+        const response = await fetch(`http://localhost:5000/lobby/${id}/join`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, avatar }),
+            body: JSON.stringify({ playerName: name, avatar }),
         });
         if (response.ok) {
             navigate(`/lobby/${id}`);

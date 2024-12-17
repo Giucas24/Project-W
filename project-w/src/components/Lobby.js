@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { io } from "socket.io-client";
 
 function Lobby() {
     const { id } = useParams();
@@ -13,6 +14,19 @@ function Lobby() {
             setPlayers(data.players);
         };
         fetchLobby();
+
+        // Connetti al server Socket.IO
+        const socket = io("http://localhost:5000");
+        socket.emit("joinLobby", id); // Unisciti alla stanza della lobby
+
+        // Ascolta gli aggiornamenti quando un giocatore si unisce
+        socket.on("playerJoined", (updatedPlayers) => {
+            setPlayers(updatedPlayers);
+        });
+
+        return () => {
+            socket.disconnect(); // Disconnetti alla chiusura del componente
+        };
     }, [id]);
 
     const inviteLink = `${window.location.origin}/join-lobby/${id}`;

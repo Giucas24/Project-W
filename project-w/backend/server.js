@@ -1,9 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const http = require("http"); // Importa il modulo http per usare Socket.IO
+const { Server } = require("socket.io");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Creiamo un server HTTP e lo passiamo a Socket.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Consenti accessi dal frontend
+        methods: ["GET", "POST"],
+    },
+});
 
 let lobbies = {}; // Salva le lobby e i giocatori
 
@@ -29,8 +40,26 @@ app.post("/lobby/:id/join", (req, res) => {
     const { playerName, avatar } = req.body;
     if (!lobbies[id]) return res.status(404).json({ error: "Lobby not found" });
     lobbies[id].push({ playerName, avatar });
+
+    // Notifica tutti i client connessi alla lobby
+    io.to(id).emit("playerJoined", lobbies[id]);
+
     res.json({ success: true, players: lobbies[id] });
 });
 
+// Gestione connessioni Socket.IO
+io.on("connection", (socket) => {
+    console.log("Un client si è connesso");
+
+    socket.on("joinLobby", (lobbyId) => {
+        socket.join(lobbyId); // Unisce il client alla stanza della lobby
+        console.log(`Client unito alla lobby ${lobbyId}`);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Un client si è disconnesso");
+    });
+});
+
 const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
