@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import "./styles/Lobby.css";
 
 function Lobby() {
     const { id } = useParams();
@@ -41,9 +42,9 @@ function Lobby() {
     };
 
     return (
-        <div style={{ display: "flex", height: "100vh" }}>
+        <div className="lobby-container">
             {/* Sidebar */}
-            <div style={{ width: "30%", borderRight: "1px solid #ccc", padding: "20px" }}>
+            <div className="sidebar">
                 <h3>Giocatori</h3>
                 <ul>
                     {players.map((player, index) => (
@@ -53,38 +54,15 @@ function Lobby() {
                     ))}
                 </ul>
                 {/* Pulsante Invita */}
-                <button
-                    onClick={copyToClipboard}
-                    style={{
-                        marginTop: "20px",
-                        padding: "10px 15px",
-                        cursor: "pointer",
-                        backgroundColor: "#4CAF50",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                    }}
-                >
-                    Invita
-                </button>
+                <button onClick={copyToClipboard}>Invita</button>
             </div>
 
             {/* Minigiochi */}
-            <div style={{ flex: 1, padding: "20px", textAlign: "center" }}>
+            <div className="minigames">
                 <h3>Minigiochi</h3>
                 <div>
                     {minigames.map((game, index) => (
-                        <button
-                            key={index}
-                            style={{
-                                display: "block",
-                                margin: "10px auto",
-                                padding: "10px 20px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            {game}
-                        </button>
+                        <button key={index}>{game}</button>
                     ))}
                 </div>
             </div>

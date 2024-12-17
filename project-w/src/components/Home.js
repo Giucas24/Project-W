@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./styles/Home.css"; // Importa il file CSS esterno
 
 function Home() {
     const [name, setName] = useState("");
     const [avatar, setAvatar] = useState("🙂"); // Default avatar
+    const [showAvatarPanel, setShowAvatarPanel] = useState(false); // Stato per mostrare il pannello avatar
     const navigate = useNavigate();
 
     const createLobby = async () => {
@@ -20,41 +22,45 @@ function Home() {
         navigate(`/lobby/${data.lobbyId}`);
     };
 
+    const avatars = ["🙂", "😎", "🤩", "🥳", "🤖", "👾"]; // Lista avatar
+
     return (
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>Project-W</h1>
-            <div style={{ margin: "20px auto", width: "300px" }}>
+        <div className="home-container">
+            <h1 className="home-title">Project-W</h1>
+            <div className="home-form">
                 <input
                     type="text"
                     placeholder="Inserisci il tuo nome"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    style={{ width: "100%", padding: "10px" }}
+                    className="home-input"
                 />
-                <div style={{ marginTop: "20px" }}>
+                <div className="avatar-selection">
                     <label>Scegli un avatar:</label>
-                    <select
-                        value={avatar}
-                        onChange={(e) => setAvatar(e.target.value)}
-                        style={{ marginLeft: "10px" }}
+                    <button
+                        className="avatar-button"
+                        onClick={() => setShowAvatarPanel(!showAvatarPanel)}
                     >
-                        <option value="🙂">🙂</option>
-                        <option value="😎">😎</option>
-                        <option value="🤩">🤩</option>
-                        <option value="🥳">🥳</option>
-                    </select>
+                        {avatar}
+                    </button>
+                    {showAvatarPanel && (
+                        <div className="avatar-panel">
+                            {avatars.map((av, index) => (
+                                <button
+                                    key={index}
+                                    className={`avatar-option ${avatar === av ? "selected" : ""}`}
+                                    onClick={() => {
+                                        setAvatar(av);
+                                        setShowAvatarPanel(false); // Chiude il pannello
+                                    }}
+                                >
+                                    {av}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
-                <button
-                    onClick={createLobby}
-                    style={{
-                        marginTop: "20px",
-                        padding: "10px 20px",
-                        backgroundColor: "#007BFF",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                    }}
-                >
+                <button onClick={createLobby} className="home-button">
                     Crea lobby privata
                 </button>
             </div>
