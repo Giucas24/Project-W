@@ -1,34 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import "./styles/Lobby.css";
 
 function Lobby() {
     const { id } = useParams();
+    const navigate = useNavigate(); // Per il redirect
     const [players, setPlayers] = useState([]);
     const [minigames] = useState(["Minigioco 1", "Minigioco 2", "Minigioco 3"]);
+    const [socket, setSocket] = useState(null); // Stato per gestire la connessione Socket.IO
 
     useEffect(() => {
         const fetchLobby = async () => {
-            const response = await fetch(`http://localhost:5000/lobby/${id}`);
-            const data = await response.json();
-            setPlayers(data.players);
+            try {
+                const response = await fetch(`http://localhost:5000/lobby/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setPlayers(data.players); // Aggiorna immediatamente la lista dei giocatori
+                } else {
+                    console.error("Errore nel caricamento della lobby:", await response.json());
+                }
+            } catch (err) {
+                console.error("Errore di rete:", err);
+            }
         };
         fetchLobby();
 
         // Connetti al server Socket.IO
-        const socket = io("http://localhost:5000");
-        socket.emit("joinLobby", id); // Unisciti alla stanza della lobby
+        const newSocket = io("http://localhost:5000");
+        setSocket(newSocket);
+
+        newSocket.emit("joinLobby", id); // Unisciti alla stanza della lobby
 
         // Ascolta gli aggiornamenti quando un giocatore si unisce
-        socket.on("playerJoined", (updatedPlayers) => {
+        newSocket.on("playerJoined", (updatedPlayers) => {
             setPlayers(updatedPlayers);
         });
 
+        // Ascolta l'evento per iniziare un minigioco
+        newSocket.on("startMinigame", (minigame) => {
+            // Cambia pagina verso il minigioco
+            navigate(`/minigame/${minigame}`);
+        });
+
         return () => {
-            socket.disconnect(); // Disconnetti alla chiusura del componente
+            newSocket.disconnect(); // Disconnetti alla chiusura del componente
         };
-    }, [id]);
+    }, [id, navigate]);
 
     const inviteLink = `${window.location.origin}/join-lobby/${id}`;
 
@@ -39,6 +57,14 @@ function Lobby() {
             console.error("Errore nella copia del link:", err);
             alert("Errore nella copia del link.");
         });
+    };
+
+    const startMinigame = (game) => {
+        if (socket) {
+            socket.emit("startMinigame", { lobbyId: id, game });
+        } else {
+            console.error("Socket non connesso");
+        }
     };
 
     return (
@@ -62,7 +88,9 @@ function Lobby() {
                 <h3>Minigiochi</h3>
                 <div>
                     {minigames.map((game, index) => (
-                        <button key={index}>{game}</button>
+                        <button key={index} onClick={() => startMinigame(game)}>
+                            {game}
+                        </button>
                     ))}
                 </div>
             </div>

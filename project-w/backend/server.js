@@ -56,10 +56,17 @@ io.on("connection", (socket) => {
         console.log(`Client unito alla lobby ${lobbyId}`);
     });
 
+    // Evento per iniziare un minigioco
+    socket.on("startMinigame", ({ lobbyId, game }) => {
+        console.log(`Minigioco "${game}" avviato nella lobby ${lobbyId}`);
+        io.to(lobbyId).emit("startMinigame", game); // Notifica a tutti i giocatori della lobby
+    });
+
     socket.on("disconnect", () => {
         console.log("Un client si è disconnesso");
     });
 });
+
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
